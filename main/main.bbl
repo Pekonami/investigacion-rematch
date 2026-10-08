@@ -1,0 +1,32 @@
+\begin{thebibliography}{1}
+
+\bibitem{BruggemannKleinW98}
+Anne Br{\"u}ggemann-Klein and Derick Wood.
+\newblock One-unambiguous regular languages.
+\newblock {\em Information and Computation}, 140(2):229--253, 1998.
+\newblock \href {https://doi.org/10.1006/inco.1997.2688}
+  {\path{doi:10.1006/inco.1997.2688}}.
+
+\bibitem{FlorenzanoRUVV20}
+Fernando Florenzano, Cristian Riveros, Mart{\'i}n Ugarte, Stijn Vansummeren,
+  and Domagoj Vrgo{\v c}.
+\newblock Efficient enumeration algorithms for regular document spanners.
+\newblock {\em ACM Transactions on Database Systems}, 45(1):3:1--3:42, 2020.
+\newblock \href {https://doi.org/10.1145/3351451} {\path{doi:10.1145/3351451}}.
+
+\bibitem{GiammarresiPW98}
+Dora Giammarresi, Jean-Luc Ponty, and Derick Wood.
+\newblock Gluskov and thompson constructions: A synthesis.
+\newblock Technical Report HKUST-TCSC-98-11, Hong Kong University of Science
+  and Technology, Theoretical Computer Science Center, October 1998.
+\newblock URL: \url{https://cse.hkust.edu.hk/tcsc/RR/index_1.html}.
+
+\bibitem{RiverosJV23}
+Cristian Riveros, Nicol{\'a}s Van~Sint Jan, and Domagoj Vrgo{\v c}.
+\newblock {REmatch}: a novel regex engine for finding all matches.
+\newblock {\em Proceedings of the VLDB Endowment}, 16(11):2792--2804, 2023.
+\newblock URL: \url{https://www.vldb.org/pvldb/vol16/p2792-vrgoc.pdf}, \href
+  {https://doi.org/10.14778/3611479.3611488}
+  {\path{doi:10.14778/3611479.3611488}}.
+
+\end{thebibliography}

@@ -1,0 +1,304 @@
+%!TEX root = ../main/main.tex
+
+\subsection{Glushkov Construction with Variable Captures}
+\label{subsec:glushkov-captures}
+
+We formulate a construction that applies the position-automaton construction
+of Section~\ref{subsec:glushkov} to an expression over letters and variable
+markers, and then interprets the resulting transitions as VA transitions.
+Throughout, we use the document positions and validity conditions defined
+in Section~\ref{sec:preliminaries}.
+
+\paragraph{1. Input expressions and capture semantics}
+Let $\Sigma$ be the document alphabet and let $\mathcal V$ be the set of
+variables. A regular expression with variable captures has the syntax
+\[
+ r ::= \varnothing\mid\varepsilon\mid a\mid r+r\mid r\cdot r
+       \mid r^*\mid x\{r\},
+ \qquad a\in\Sigma,\quad x\in\mathcal V.
+\]
+Here, $+$ denotes union and $x\{r\}$ captures the substring matched by $r$
+in variable $x$. We use partial mappings and allow empty captures, following
+the mapping-based semantics of Florenzano et al.~\cite{FlorenzanoRUVV20}.
+The expression is matched against the entire document.
+
+Let $\Omega=\Sigma\cup\Gamma_{\mathcal V}$. Translate $r$ into an ordinary
+regular expression $\tau(r)$ over $\Omega$ by
+\[
+\begin{aligned}
+ \tau(\varnothing)&=\varnothing,
+ &\tau(\varepsilon)&=\varepsilon,
+ &\tau(a)&=a,\\
+ \tau(r_1+r_2)&=\tau(r_1)+\tau(r_2),
+ &\tau(r_1\cdot r_2)&=\tau(r_1)\cdot\tau(r_2),
+ &\tau(r^*)&=\tau(r)^*,
+\end{aligned}
+\]
+and
+\[
+ \tau(x\{r\})=x\vdash\cdot\tau(r)\cdot\dashv x.
+\]
+Each marker is a single symbol of $\Omega$. If the input expression already
+uses explicit markers, we take that expression directly as $E$; otherwise,
+we set $E=\tau(r)$. Only the finitely many markers occurring in $E$ are
+needed for the construction.
+
+For a word $w\in\Omega^*$, let $\pi_\Sigma(w)$ erase all variable markers.
+Call $w$ valid when each variable either has no markers in $w$, or has exactly
+one opening marker followed by exactly one closing marker.
+If $w=o_1\cdots o_m$ is valid and the markers of $x$ occur at indices
+$h<k$, its induced mapping assigns
+\[
+ \mu_w(x)=
+ \bigl[1+|\pi_\Sigma(o_1\cdots o_{h-1})|,
+       1+|\pi_\Sigma(o_1\cdots o_{k-1})|\bigr\rangle.
+\]
+Its domain consists of the variables whose markers occur in $w$.
+Thus, for an expression $E$ with explicit markers, the extraction semantics
+we use is
+\[
+ \llbracket E\rrbracket_d
+ =\{\mu_w\mid w\in\mathcal L(E),\ w\text{ is valid},\
+                    \pi_\Sigma(w)=d\}.
+\]
+Here $\mathcal L(E)$ is the ordinary language over letters and markers,
+whereas $\llbracket E\rrbracket_d$ is a set of mappings over the document.
+
+\paragraph{2. Positions of letters and markers}
+Number every occurrence of a symbol of $\Omega$ in $E$ from left to right.
+If there are $n$ occurrences, let $\operatorname{Pos}(E)=\{1,\ldots,n\}$,
+and let $\ell_E(i)\in\Omega$ be the label at position $i$.
+Replacing every symbol occurrence by its position produces $E'$.
+Different occurrences receive different positions even when their labels
+coincide. Neither $\varnothing$ nor $\varepsilon$ receives a position.
+For example, $x\vdash\cdot a\cdot b\cdot\dashv x$ has four positions,
+labelled $x\vdash$, $a$, $b$, and $\dashv x$, respectively.
+
+\paragraph{3. Computing nullable, first, last, and follow}
+We compute the position sets on the syntax tree of $E'$, keeping the global
+position numbers fixed. For a subexpression $S$, let
+$\nu(S)$ mean $\varepsilon\in\mathcal L(S)$ and let
+$\eta(S)$ mean $\mathcal L(S)\neq\varnothing$.
+The second predicate handles empty-language subexpressions explicitly.
+Their inductive rules are
+\[
+\begin{array}{c|cc}
+ S & \nu(S) & \eta(S)\\ \hline
+ \varnothing & \mathrm{false} & \mathrm{false}\\
+ \varepsilon & \mathrm{true} & \mathrm{true}\\
+ i & \mathrm{false} & \mathrm{true}\\
+ U+V & \nu(U)\lor\nu(V) & \eta(U)\lor\eta(V)\\
+ U\cdot V & \nu(U)\land\nu(V) & \eta(U)\land\eta(V)\\
+ U^* & \mathrm{true} & \mathrm{true}
+\end{array}
+\]
+Every position $i$ is a non-nullable atom, including positions labelled
+by variable markers. A marker is not the empty word over $\Omega$,
+even though its eventual VA transition consumes no document character.
+
+Let $\mathsf F(S)$ and $\mathsf L(S)$ contain the positions that can begin
+and end words in $\mathcal L(S)$, respectively. Let $\mathsf P(S)$ contain
+the pairs of positions that can occur consecutively in such words.
+For the base cases,
+\[
+\begin{aligned}
+ \mathsf F(\varnothing)=\mathsf L(\varnothing)=\mathsf P(\varnothing)
+   &=\varnothing,\\
+ \mathsf F(\varepsilon)=\mathsf L(\varepsilon)=\mathsf P(\varepsilon)
+   &=\varnothing,\\
+ \mathsf F(i)=\mathsf L(i)&=\{i\},\qquad
+ \mathsf P(i)=\varnothing.
+\end{aligned}
+\]
+For union, compute each set by taking the union of the corresponding
+sets of the children:
+\[
+ \mathsf X(U+V)=\mathsf X(U)\cup\mathsf X(V),
+ \qquad \mathsf X\in\{\mathsf F,\mathsf L,\mathsf P\}.
+\]
+For concatenation, if $\eta(U\cdot V)$ is false, all three sets are empty.
+Otherwise,
+\[
+\begin{aligned}
+ \mathsf F(U\cdot V)
+   &=\mathsf F(U)\cup
+     \begin{cases}\mathsf F(V),&\text{if }\nu(U),\\
+                   \varnothing,&\text{otherwise},\end{cases}\\[3pt]
+ \mathsf L(U\cdot V)
+   &=\mathsf L(V)\cup
+     \begin{cases}\mathsf L(U),&\text{if }\nu(V),\\
+                   \varnothing,&\text{otherwise},\end{cases}\\[3pt]
+ \mathsf P(U\cdot V)
+   &=\mathsf P(U)\cup\mathsf P(V)
+     \cup\bigl(\mathsf L(U)\times\mathsf F(V)\bigr).
+\end{aligned}
+\]
+For Kleene star,
+\[
+\begin{aligned}
+ \mathsf F(U^*)&=\mathsf F(U),\qquad
+ \mathsf L(U^*)=\mathsf L(U),\\
+ \mathsf P(U^*)&=\mathsf P(U)
+        \cup\bigl(\mathsf L(U)\times\mathsf F(U)\bigr).
+\end{aligned}
+\]
+At the root, these sets give
+\[
+\begin{aligned}
+ \operatorname{first}(E)&=\mathsf F(E'),\qquad
+ \operatorname{last}(E)=\mathsf L(E'),\\
+ \operatorname{follow}(i,E)
+   &=\{j\in\operatorname{Pos}(E)\mid(i,j)\in\mathsf P(E')\}.
+\end{aligned}
+\]
+The test for an empty concatenation ensures that these sets agree with
+the language-based definitions even when $\varnothing$ occurs in $E$.
+
+\paragraph{4. Constructing the position automaton}
+Apply the Glushkov construction over $\Omega$ using the sets above.
+The states are $Q_E=\{0\}\cup\operatorname{Pos}(E)$, with initial state $0$.
+Define
+\[
+\begin{aligned}
+ \delta_E={}&\{(0,\ell_E(j),j)\mid j\in\operatorname{first}(E)\}\\
+            &{}\cup\{(i,\ell_E(j),j)\mid
+                i\in\operatorname{Pos}(E),\ j\in\operatorname{follow}(i,E)\},
+\end{aligned}
+\]
+and
+\[
+ F_E=
+ \begin{cases}
+   \operatorname{last}(E)\cup\{0\},&\text{if }\nu(E'),\\
+   \operatorname{last}(E),&\text{otherwise}.
+ \end{cases}
+\]
+At this stage, the position automaton reads words over $\Omega$: each
+transition reads one letter or one marker as an ordinary alphabet symbol.
+There is one state per symbol occurrence and one additional initial state.
+
+\paragraph{5. Interpreting the automaton as a VA}
+For an input expression $r$ with $E=\tau(r)$, define the associated
+\emph{Glushkov VA} to be
+\[
+ G_r=(Q_E,0,F_E,\delta_E).
+\]
+For an input already written with explicit markers, use the same tuple
+and denote it by $G_E$.
+The transition relation is now interpreted according to
+Definition~\ref{def:configuration}:
+\begin{enumerate}
+ \item a transition labelled by $a\in\Sigma$ reads the next document
+       character, requires it to equal $a$, and advances one position;
+ \item a transition labelled by $x\vdash$ opens $x$ at the current
+       document position without advancing;
+ \item a transition labelled by $\dashv x$ closes $x$ at the current
+       document position without advancing.
+\end{enumerate}
+Runs start at document position $1$ and finish at position $|d|+1$.
+A run is accepting when its last state belongs to $F_E$.
+Its validity and induced mapping are those of
+Definitions~\ref{def:valid-run} and~\ref{def:run-mapping}. Accordingly,
+\[
+ \llbracket G_r\rrbracket_d
+ =\{\mu_\rho\mid\rho\text{ is a valid accepting run of }G_r
+                       \text{ over }d\}.
+\]
+The same convention applies to $G_E$. Opening and closing a variable at
+the same document position produces an empty span. In particular,
+$x\{\varepsilon\}$ translates to a nonempty word of two markers, yet
+its VA can accept the empty document and capture $[1,1\rangle$.
+Variable transitions retain their marker labels; no unlabelled
+$\varepsilon$-transitions are introduced.
+
+\begin{example}[Glushkov construction with a variable capture]
+\label{ex:glushkov-capture}
+Let $\Sigma=\{a,b\}$ and consider
+\[
+ r=x\{(a+b)^*\}\cdot a.
+\]
+The expression captures a possibly empty prefix in $x$, followed by a final
+$a$ outside the capture. Translating the capture gives
+\[
+ E=\tau(r)=x\vdash\cdot(a+b)^*\cdot\dashv x\cdot a.
+\]
+There are five symbol occurrences, with labels
+\[
+\begin{array}{c|ccccc}
+ i & 1 & 2 & 3 & 4 & 5\\ \hline
+ \ell_E(i) & x\vdash & a & b & \dashv x & a
+\end{array}
+\]
+The corresponding position expression is
+\[
+ E'=1\cdot(2+3)^*\cdot4\cdot5.
+\]
+Positions $2$ and $5$ are distinct occurrences of $a$. The subexpression
+$(2+3)^*$ is nullable, but $E'$ is not: positions $1$, $4$, and $5$ must
+still be read. Consequently,
+\[
+ \nu(E')=\mathrm{false},\qquad
+ \operatorname{first}(E)=\{1\},\qquad
+ \operatorname{last}(E)=\{5\}.
+\]
+The follow sets are
+\[
+\begin{array}{c|c}
+ i & \operatorname{follow}(i,E)\\ \hline
+ 1 & \{2,3,4\}\\
+ 2 & \{2,3,4\}\\
+ 3 & \{2,3,4\}\\
+ 4 & \{5\}\\
+ 5 & \varnothing
+\end{array}
+\]
+After opening $x$, the run may read $a$ or $b$, or close $x$ immediately.
+After a symbol inside the star, it may read another symbol of the star or
+close the capture. Closing $x$ must be followed by the final $a$.
+
+The resulting VA is $G_r=(Q_E,0,F_E,\delta_E)$, with
+\[
+ Q_E=\{0,1,2,3,4,5\},\qquad F_E=\{5\}.
+\]
+Its complete transition relation is
+\[
+\begin{aligned}
+ \delta_E={}&\{(0,x\vdash,1),(4,a,5)\}\\
+ &{}\cup\{(i,a,2),(i,b,3),(i,\dashv x,4)\mid i\in\{1,2,3\}\}.
+\end{aligned}
+\]
+Thus, it has six states and eleven transitions. In particular, the
+transition $(1,\dashv x,4)$ is present because the star may be skipped;
+it closes the variable without consuming a document character.
+
+On the document $d=aba$, a valid accepting run is
+\[
+\begin{aligned}
+ \rho:\quad
+ (0,1)&\xrightarrow{x\vdash}_d(1,1)
+       \xrightarrow{a}_d(2,2)
+       \xrightarrow{b}_d(3,3)\\
+      &\xrightarrow{\dashv x}_d(4,3)
+       \xrightarrow{a}_d(5,4).
+\end{aligned}
+\]
+Here, the first component of each configuration is an automaton state and
+the second is a document position. The variable opens at position $1$ and
+closes at position $3$, yielding
+\[
+ \mu_\rho=[x\mapsto[1,3\rangle],\qquad d(1,3)=ab.
+\]
+The last $a$ is consumed after the capture closes. This is the only valid
+accepting run on $aba$, so
+\[
+ \llbracket G_r\rrbracket_{aba}=\{[x\mapsto[1,3\rangle]\}.
+\]
+The same automaton also illustrates an empty capture. On $d=a$, the run
+\[
+ (0,1)\xrightarrow{x\vdash}_d(1,1)
+       \xrightarrow{\dashv x}_d(4,1)
+       \xrightarrow{a}_d(5,2)
+\]
+is valid and accepting and induces $[x\mapsto[1,1\rangle]$.
+Both markers are traversed even though the captured substring is empty.
+\end{example}

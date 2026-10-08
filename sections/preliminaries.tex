@@ -1,0 +1,329 @@
+%!TEX root = ../main/main.tex
+
+The definitions of documents, spans, mappings, and variable-set automata
+below follow Section~2 of Florenzano et al.~\cite{FlorenzanoRUVV20}.
+We then formulate the logical-VA model of
+Riveros et al.~\cite{RiverosJV23}, making our conventions for runs and
+captures explicit. These preliminaries provide the vocabulary needed to
+study a Glushkov construction with capture variables.
+
+\subsection{Documents and spans}\label{subsec:documents-spans}
+
+Let $\Sigma$ be a finite alphabet. Let $\Sigma^*$ denote the set of finite
+words over $\Sigma$, and let $\varepsilon$ denote the empty word.
+
+\begin{definition}[Document and positions]\label{def:document}
+A \emph{document} is a word $d=a_1\cdots a_n\in\Sigma^*$.
+Its length is $|d|=n$, and its set of positions is
+\[
+  \operatorname{pos}(d)=\{1,\ldots,n+1\}.
+\]
+Position $i\leq n$ lies immediately before the character $a_i$;
+position $n+1$ lies after the last character. In particular,
+$\operatorname{pos}(\varepsilon)=\{1\}$.
+\end{definition}
+
+\begin{definition}[Span]\label{def:span}
+A \emph{span} of $d$ is a half-open interval $s=[i,j\rangle$ with
+$1\leq i\leq j\leq |d|+1$. The set of spans of $d$ is
+\[
+  \operatorname{span}(d)
+  =\{[i,j\rangle\mid 1\leq i\leq j\leq |d|+1\}.
+\]
+The content of $s$ is the substring
+$d(s)=d(i,j)=a_i\cdots a_{j-1}$ when $i<j$, and
+$\varepsilon$ when $i=j$. Its length is $j-i$.
+For adjacent spans $s_1=[i,j\rangle$ and $s_2=[j,k\rangle$, their
+concatenation 
+is $s_1\cdot s_2=[i,k\rangle$.
+\end{definition}
+
+Distinct spans may have the same content. For instance, in
+$d=\mathtt{aba}$, the spans $[1,2\rangle$ and $[3,4\rangle$ both
+contain $\mathtt{a}$ but refer to different positions.
+
+\subsection{Variables, mappings, and document spanners}\label{subsec:mappings}
+
+Let $\mathcal V$ be a fixed set of variables, disjoint from $\Sigma$.
+The set $\mathcal V$ need not be finite, although each mapping and each
+automaton considered here uses only finitely many variables.
+
+\begin{definition}[Mapping]\label{def:mapping}
+A \emph{mapping over $d$} is a function
+\[
+  \mu:\operatorname{dom}(\mu)\longrightarrow\operatorname{span}(d),
+  \qquad \operatorname{dom}(\mu)\subseteq\mathcal V\text{ finite}.
+\]
+Thus, a mapping is a partial assignment of variables to spans.
+The \emph{empty mapping}, denoted by $\varnothing$, has empty domain.
+We write $[x\mapsto s]$ for the mapping with domain $\{x\}$ that assigns
+$s$ to $x$. Let $\operatorname{Map}(d)$ be the set of all mappings over $d$.
+\end{definition}
+
+\begin{definition}[Compatibility]\label{def:compatible-mappings}
+Mappings $\mu_1,\mu_2\in\operatorname{Map}(d)$ are \emph{compatible},
+written $\mu_1\sim\mu_2$, if
+\[
+  \mu_1(x)=\mu_2(x)
+  \quad\text{for every }x\in
+  \operatorname{dom}(\mu_1)\cap\operatorname{dom}(\mu_2).
+\]
+Their union $\mu_1\cup\mu_2$ is then the mapping with domain
+$\operatorname{dom}(\mu_1)\cup\operatorname{dom}(\mu_2)$ that agrees
+with each mapping on its domain.
+\end{definition}
+
+\begin{definition}[Document spanner]\label{def:spanner}
+A \emph{document spanner} is a function $P$ assigning to every document
+$d\in\Sigma^*$ a set $P(d)\subseteq\operatorname{Map}(d)$.
+Each element of $P(d)$ is an extraction result.
+\end{definition}
+
+The result $P(d)=\varnothing$ contains no outputs, whereas
+$P(d)=\{\varnothing\}$ contains one output: the mapping that assigns
+no variables. An empty span $[i,i\rangle$ is a value that may be assigned
+to a variable and is distinct from the empty mapping.
+
+\vspace{1\baselineskip}
+\noindent
+\begin{minipage}{\linewidth}
+\normalfont
+\begin{center}
+Table 2.\quad Semantics $\llbracket\gamma\rrbracket_d$ of an RGX
+$\gamma$ over a Document $d$
+\end{center}
+\vspace{-0.5\baselineskip}
+\hrule
+\smallskip
+\noindent\resizebox{\linewidth}{!}{$\displaystyle
+\begin{aligned}
+  \llbracket\gamma\rrbracket_d
+    &= \{\mu\mid ([1,|d|+1\rangle,\mu)\in[\gamma]_d\} \\
+  [\varepsilon]_d
+    &= \{(s,\varnothing)\mid s\in\mathrm{span}(d)\text{ and }d(s)=\varepsilon\} \\
+  [a]_d
+    &= \{(s,\varnothing)\mid s\in\mathrm{span}(d)\text{ and }d(s)=a\} \\
+  [x\{\gamma\}]_d
+    &= \{(s,\mu)\mid\exists(s,\mu')\in[\gamma]_d:
+        x\notin\mathrm{dom}(\mu')\text{ and }\mu=[x\to s]\cup\mu'\} \\
+  [\gamma_1\cdot\gamma_2]_d
+    &= \{(s,\mu)\mid\exists(s_1,\mu_1)\in[\gamma_1]_d,
+        \exists(s_2,\mu_2)\in[\gamma_2]_d: \\
+    &\qquad s=s_1\cdot s_2,\ \mathrm{dom}(\mu_1)\cap\mathrm{dom}(\mu_2)
+        =\varnothing,\text{ and }\mu=\mu_1\cup\mu_2\} \\
+  [\gamma_1\vee\gamma_2]_d
+    &= [\gamma_1]_d\cup[\gamma_2]_d \\
+  [\gamma^*]_d
+    &= [\varepsilon]_d\cup[\gamma]_d\cup[\gamma^2]_d
+       \cup[\gamma^3]_d\cup\cdots
+\end{aligned}
+$}
+\smallskip
+\hrule
+\smallskip
+\noindent Here, $\gamma^2$ is shorthand for $\gamma\cdot\gamma$, similarly
+$\gamma^3$ for $\gamma\cdot\gamma\cdot\gamma$, and so forth.
+\end{minipage}
+\par\smallskip
+\noindent Source: Florenzano et al.~\cite[Table~2]{FlorenzanoRUVV20}.
+\par\smallskip
+
+\newpage
+
+\subsection{Variable-set automata}\label{subsec:va}
+
+For each $x\in\mathcal V$, introduce two distinct formal symbols:
+$x\vdash$ for \emph{opening} $x$, and $\dashv x$ for \emph{closing} $x$.
+These symbols are called \emph{variable markers}. Their set is
+\[
+  \Gamma_{\mathcal V}
+  =\{x\vdash,\dashv x\mid x\in\mathcal V\},
+\]
+and is disjoint from $\Sigma$.
+
+\begin{definition}[VA]\label{def:va}
+A \emph{variable-set automaton} (VA) over $\Sigma$ and $\mathcal V$ is
+a tuple $A=(Q,q_0,F,\delta)$, where $Q$ is a finite set of states,
+$q_0\in Q$ is the initial state, $F\subseteq Q$ is the set of final states,
+and $\delta$ is a finite transition relation
+\[
+  \delta\subseteq Q\times(\Sigma\cup\Gamma_{\mathcal V})\times Q.
+\]
+Transitions $(q,a,q')$ with $a\in\Sigma$ are \emph{letter transitions}.
+Transitions $(q,x\vdash,q')$ and $(q,\dashv x,q')$ are
+\emph{variable transitions}. Define
+\[
+  \operatorname{var}(A)
+  =\{x\in\mathcal V\mid
+       (q,x\vdash,q')\in\delta\text{ or }(q,\dashv x,q')\in\delta
+       \text{ for some }q,q'\in Q\}.
+\]
+\end{definition}
+
+This definition does not require determinism. Variable transitions consume
+no characters and retain their markers as labels; they are not
+$\varepsilon$-labelled transitions.
+
+\begin{definition}[Configuration and step]\label{def:configuration}
+A \emph{configuration} of $A$ over $d$ is a pair $(q,i)$ with
+$q\in Q$ and $i\in\operatorname{pos}(d)$. A step
+$(q,i)\xrightarrow{o}_d(q',i')$ is allowed if $(q,o,q')\in\delta$ and
+one of the following conditions holds:
+\begin{enumerate}
+  \item $o=a\in\Sigma$, $i\leq |d|$, $a_i=a$, and $i'=i+1$;
+  \item $o\in\Gamma_{\mathcal V}$ and $i'=i$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Run and acceptance of a VA]\label{def:va-run}
+A \emph{run} of $A$ over $d$ is a finite sequence
+\[
+  \rho=(q_0,i_0)\xrightarrow{o_1}_d(q_1,i_1)
+       \xrightarrow{o_2}_d\cdots
+       \xrightarrow{o_m}_d(q_m,i_m),
+\]
+where every step satisfies Definition~\ref{def:configuration},
+$i_0=1$, and $i_m=|d|+1$. A run with $m=0$ is allowed when these
+conditions hold. The run is \emph{accepting} if $q_m\in F$.
+\end{definition}
+
+The positions $i_0,\ldots,i_m$ are non-decreasing. Each letter step
+advances one position, whereas each variable step keeps the current
+position. The endpoint conditions require a VA run to traverse the
+entire document.
+
+\begin{definition}[Valid run]\label{def:valid-run}
+A run $\rho$ is \emph{valid} if, for every $x\in\mathcal V$, exactly
+one of the following cases holds:
+\begin{enumerate}
+  \item neither $x\vdash$ nor $\dashv x$ occurs in $o_1\cdots o_m$;
+  \item there are unique indices $r,s$ with $1\leq r<s\leq m$ such that
+        $o_r=x\vdash$ and $o_s=\dashv x$, with no other occurrences
+        of either marker.
+\end{enumerate}
+\end{definition}
+
+Each variable used in a valid run is therefore opened once and closed once,
+in that order. Captures of distinct variables need not be properly nested:
+the marker sequence $x\vdash\,y\vdash\,\dashv x\,\dashv y$ is allowed.
+
+\begin{definition}[Mapping induced by a run]\label{def:run-mapping}
+A valid run $\rho$ induces a mapping $\mu_\rho$ whose domain consists
+of exactly the variables whose markers occur in $\rho$.
+If $o_r=x\vdash$ and $o_s=\dashv x$, then
+\[
+  \mu_\rho(x)=[i_{r-1},i_{s-1}\rangle.
+\]
+The endpoints are the document positions at which the markers are executed.
+Since markers consume no characters, $i_{r-1}=i_r$ and $i_{s-1}=i_s$.
+\end{definition}
+
+The monotonicity of positions gives $i_{r-1}\leq i_{s-1}$, so that
+$\mu_\rho(x)$ is a span of $d$. A valid run may induce an empty span
+when the opening and closing markers are executed at the same position.
+
+\begin{definition}[Semantics of a VA]\label{def:va-semantics}
+The document spanner defined by $A$ is denoted by $\llbracket A\rrbracket$
+and satisfies
+\[
+  \llbracket A\rrbracket_d
+  =\{\mu_\rho\mid\rho\text{ is a valid accepting run of }A\text{ over }d\}.
+\]
+\end{definition}
+
+The semantics is a set: if several runs induce the same mapping,
+that mapping occurs only once. An accepting run that is not valid
+contributes no output.
+
+\begin{definition}[Sequentiality and functionality]\label{def:sequential-functional}
+A valid run of $A$ is \emph{functional} if it uses all variables in
+$\operatorname{var}(A)$; equivalently,
+$\operatorname{dom}(\mu_\rho)=\operatorname{var}(A)$.
+A VA is \emph{sequential} (sVA) if all its accepting runs are valid,
+for every document. It is \emph{functional} (fVA) if all its accepting
+runs are functional, for every document.
+\end{definition}
+
+Every fVA is sequential. Functionality does not require a unique extraction
+result: it requires every accepting run to assign all variables validly.
+
+\subsection{The Glushkov construction}\label{subsec:glushkov}
+
+We present the construction from
+Giammarresi, Ponty, and Wood~\cite[Section~3.2]{GiammarresiPW98}.
+Here, $E$ is an ordinary regular expression over $\Sigma$, built from
+$\varnothing$, $\varepsilon$, and letters using union, concatenation,
+and Kleene star. Its language is denoted by $\mathcal L(E)$.
+This construction yields an automaton recognising $\mathcal L(E)$;
+capture variables will require a separate extension.
+
+\paragraph{Positions and the marked expression}
+Number the occurrences of letters in $E$ from left to right, starting at
+$1$. If there are $n$ occurrences, write
+$\operatorname{Pos}(E)=\{1,\ldots,n\}$ and let
+$\ell_E:\operatorname{Pos}(E)\to\Sigma$ map each position to the letter
+occurring there. Replacing each letter occurrence by its position gives
+an expression $E'$ over $\operatorname{Pos}(E)$. The symbols
+$\varnothing$ and $\varepsilon$ are left unchanged and receive no positions.
+These positions identify occurrences in the expression, rather than
+positions in an input document.
+
+\paragraph{First, last, and follow sets}
+Define
+\[
+\begin{aligned}
+  \operatorname{first}(E)
+    &=\{i\in\operatorname{Pos}(E)\mid
+        \exists u\in\operatorname{Pos}(E)^*: iu\in\mathcal L(E')\},\\
+  \operatorname{last}(E)
+    &=\{i\in\operatorname{Pos}(E)\mid
+        \exists u\in\operatorname{Pos}(E)^*: ui\in\mathcal L(E')\},\\
+  \operatorname{follow}(i,E)
+    &=\{j\in\operatorname{Pos}(E)\mid
+        \exists u,v\in\operatorname{Pos}(E)^*: uijv\in\mathcal L(E')\},
+        \qquad i\in\operatorname{Pos}(E).
+\end{aligned}
+\]
+Thus, $\operatorname{first}(E)$ and $\operatorname{last}(E)$ contain the
+positions that can begin and end a word of $\mathcal L(E')$, respectively.
+The set $\operatorname{follow}(i,E)$ contains the positions that can occur
+immediately after $i$ in such a word.
+
+\begin{samepage}
+\begin{definition}[Glushkov automaton]\label{def:glushkov-automaton}
+The \emph{Glushkov automaton} of $E$ is the nondeterministic finite automaton
+\[
+  M_E=(Q_E,\Sigma,\delta_E,0,F_E),
+\]
+where $Q_E=\{0\}\cup\operatorname{Pos}(E)$, $0$ is the initial state,
+and the transition relation is
+\[
+\begin{aligned}
+  \delta_E={}&\{(0,\ell_E(j),j)\mid j\in\operatorname{first}(E)\}\\
+             &{}\cup\{(i,\ell_E(j),j)\mid
+                 i\in\operatorname{Pos}(E),\ j\in\operatorname{follow}(i,E)\}.
+\end{aligned}
+\]
+The set of final states is
+\[
+  F_E=
+  \begin{cases}
+    \operatorname{last}(E)\cup\{0\}, & \text{if }\varepsilon\in\mathcal L(E),\\
+    \operatorname{last}(E), & \text{otherwise}.
+  \end{cases}
+\]
+\end{definition}
+\end{samepage}
+
+The initial state is included in $F_E$ when $E$ accepts the empty word.
+This case is made explicit in
+Br\"uggemann-Klein and Wood~\cite[Definition~2.3]{BruggemannKleinW98};
+the abbreviated description in~\cite[Section~3.2]{GiammarresiPW98}
+lists only $\operatorname{last}(E)$.
+
+The construction satisfies $\mathcal L(M_E)=\mathcal L(E)$.
+It has $n+1$ states and no $\varepsilon$-transitions. No transition enters
+the initial state, and every transition entering a position $j$ is
+labelled by $\ell_E(j)$. There is at most $n+n^2$ transitions, giving
+the quadratic worst-case transition bound stated
+in~\cite[Section~3.2]{GiammarresiPW98}.
