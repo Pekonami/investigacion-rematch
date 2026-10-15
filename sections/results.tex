@@ -38,6 +38,11 @@ and
 \[
  \tau(x\{r\})=x\vdash\cdot\tau(r)\cdot\dashv x.
 \]
+
+Intuitively, $\tau$ acts as a term-algebra homomorphism that embeds expressions 
+with captures into standard regular expressions over $\Omega$, extending standard 
+regular expression operators.
+
 Each marker is a single symbol of $\Omega$. If the input expression already
 uses explicit markers, we take that expression directly as $E$; otherwise,
 we set $E=\tau(r)$. Only the finitely many markers occurring in $E$ are
@@ -74,85 +79,14 @@ coincide. Neither $\varnothing$ nor $\varepsilon$ receives a position.
 For example, $x\vdash\cdot a\cdot b\cdot\dashv x$ has four positions,
 labelled $x\vdash$, $a$, $b$, and $\dashv x$, respectively.
 
-\paragraph{3. Computing nullable, first, last, and follow}
-We compute the position sets on the syntax tree of $E'$, keeping the global
-position numbers fixed. For a subexpression $S$, let
-$\nu(S)$ mean $\varepsilon\in\mathcal L(S)$ and let
-$\eta(S)$ mean $\mathcal L(S)\neq\varnothing$.
-The second predicate handles empty-language subexpressions explicitly.
-Their inductive rules are
-\[
-\begin{array}{c|cc}
- S & \nu(S) & \eta(S)\\ \hline
- \varnothing & \mathrm{false} & \mathrm{false}\\
- \varepsilon & \mathrm{true} & \mathrm{true}\\
- i & \mathrm{false} & \mathrm{true}\\
- U+V & \nu(U)\lor\nu(V) & \eta(U)\lor\eta(V)\\
- U\cdot V & \nu(U)\land\nu(V) & \eta(U)\land\eta(V)\\
- U^* & \mathrm{true} & \mathrm{true}
-\end{array}
-\]
-Every position $i$ is a non-nullable atom, including positions labelled
-by variable markers. A marker is not the empty word over $\Omega$,
-even though its eventual VA transition consumes no document character.
-
-Let $\mathsf F(S)$ and $\mathsf L(S)$ contain the positions that can begin
-and end words in $\mathcal L(S)$, respectively. Let $\mathsf P(S)$ contain
-the pairs of positions that can occur consecutively in such words.
-For the base cases,
-\[
-\begin{aligned}
- \mathsf F(\varnothing)=\mathsf L(\varnothing)=\mathsf P(\varnothing)
-   &=\varnothing,\\
- \mathsf F(\varepsilon)=\mathsf L(\varepsilon)=\mathsf P(\varepsilon)
-   &=\varnothing,\\
- \mathsf F(i)=\mathsf L(i)&=\{i\},\qquad
- \mathsf P(i)=\varnothing.
-\end{aligned}
-\]
-For union, compute each set by taking the union of the corresponding
-sets of the children:
-\[
- \mathsf X(U+V)=\mathsf X(U)\cup\mathsf X(V),
- \qquad \mathsf X\in\{\mathsf F,\mathsf L,\mathsf P\}.
-\]
-For concatenation, if $\eta(U\cdot V)$ is false, all three sets are empty.
-Otherwise,
-\[
-\begin{aligned}
- \mathsf F(U\cdot V)
-   &=\mathsf F(U)\cup
-     \begin{cases}\mathsf F(V),&\text{if }\nu(U),\\
-                   \varnothing,&\text{otherwise},\end{cases}\\[3pt]
- \mathsf L(U\cdot V)
-   &=\mathsf L(V)\cup
-     \begin{cases}\mathsf L(U),&\text{if }\nu(V),\\
-                   \varnothing,&\text{otherwise},\end{cases}\\[3pt]
- \mathsf P(U\cdot V)
-   &=\mathsf P(U)\cup\mathsf P(V)
-     \cup\bigl(\mathsf L(U)\times\mathsf F(V)\bigr).
-\end{aligned}
-\]
-For Kleene star,
-\[
-\begin{aligned}
- \mathsf F(U^*)&=\mathsf F(U),\qquad
- \mathsf L(U^*)=\mathsf L(U),\\
- \mathsf P(U^*)&=\mathsf P(U)
-        \cup\bigl(\mathsf L(U)\times\mathsf F(U)\bigr).
-\end{aligned}
-\]
-At the root, these sets give
-\[
-\begin{aligned}
- \operatorname{first}(E)&=\mathsf F(E'),\qquad
- \operatorname{last}(E)=\mathsf L(E'),\\
- \operatorname{follow}(i,E)
-   &=\{j\in\operatorname{Pos}(E)\mid(i,j)\in\mathsf P(E')\}.
-\end{aligned}
-\]
-The test for an empty concatenation ensures that these sets agree with
-the language-based definitions even when $\varnothing$ occurs in $E$.
+\paragraph{3. First, last, and follow}
+Use the language-based definitions of $\operatorname{first}$,
+$\operatorname{last}$, and $\operatorname{follow}$ from
+Section~\ref{subsec:glushkov}, applied to the marked expression $E'$ over
+$\operatorname{Pos}(E)$. Thus, the construction is specified in terms of
+which position sequences occur in $\mathcal L(E')$. At this stage, each variable
+marker is treated as an ordinary symbol at its position. Its zero-width
+interpretation as a VA transition is used only in Step~5.
 
 \paragraph{4. Constructing the position automaton}
 Apply the Glushkov construction over $\Omega$ using the sets above.
@@ -169,7 +103,7 @@ and
 \[
  F_E=
  \begin{cases}
-   \operatorname{last}(E)\cup\{0\},&\text{if }\nu(E'),\\
+   \operatorname{last}(E)\cup\{0\},&\text{if }\varepsilon \in (E'),\\
    \operatorname{last}(E),&\text{otherwise}.
  \end{cases}
 \]
@@ -237,7 +171,7 @@ Positions $2$ and $5$ are distinct occurrences of $a$. The subexpression
 $(2+3)^*$ is nullable, but $E'$ is not: positions $1$, $4$, and $5$ must
 still be read. Consequently,
 \[
- \nu(E')=\mathrm{false},\qquad
+ \epsilon \notin \mathcal L(E'),\qquad
  \operatorname{first}(E)=\{1\},\qquad
  \operatorname{last}(E)=\{5\}.
 \]

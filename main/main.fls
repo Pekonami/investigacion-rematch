@@ -523,7 +523,6 @@ INPUT ../sections/intro.tex
 INPUT ../sections/intro.tex
 INPUT ../sections/intro.tex
 INPUT ../sections/intro.tex
-INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmbx10.tfm
 INPUT ../sections/preliminaries.tex
 INPUT ../sections/preliminaries.tex
 INPUT ../sections/preliminaries.tex
@@ -543,6 +542,11 @@ INPUT /usr/local/texlive/2026basic/texmf-dist/tex/latex/lm/ot1lmtt.fd
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/rm-lmtt10.tfm
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/rm-lmtt8.tfm
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/rm-lmtt8.tfm
+INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolS10.tfm
+INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolS7.tfm
+INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolS5.tfm
+INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmri7.tfm
+INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmri7.tfm
 INPUT /Users/anibal/Library/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
@@ -550,14 +554,9 @@ INPUT /Users/anibal/Library/texmf/fonts/enc/dvips/mnsymbol/MnSymbolC.enc
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
 INPUT /Users/anibal/Library/texmf/fonts/enc/dvips/mnsymbol/MnSymbolD.enc
 INPUT /Users/anibal/Library/texmf/fonts/enc/dvips/mnsymbol/MnSymbolE.enc
-INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolS10.tfm
-INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolS7.tfm
-INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolS5.tfm
-INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmri7.tfm
-INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmri7.tfm
-INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmr7.tfm
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/lm/lm-rmtt.enc
 INPUT /Users/anibal/Library/texmf/fonts/enc/dvips/mnsymbol/MnSymbolS.enc
+INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmr7.tfm
 INPUT /Users/anibal/Library/texmf/fonts/enc/dvips/mnsymbol/MnSymbolA.enc
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmsso10.tfm
 INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmssbo10.tfm
@@ -577,6 +576,7 @@ INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolC-Bold7.tfm
 INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolC-Bold5.tfm
 INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolD-Bold7.tfm
 INPUT /Users/anibal/Library/texmf/fonts/tfm/public/mnsymbol/MnSymbolD-Bold5.tfm
+INPUT /usr/local/texlive/2026basic/texmf-dist/fonts/tfm/public/lm/ec-lmbx10.tfm
 INPUT ../sections/results.tex
 INPUT ../sections/results.tex
 INPUT ../sections/results.tex

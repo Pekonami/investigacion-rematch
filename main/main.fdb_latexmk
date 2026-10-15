@@ -1,25 +1,25 @@
 # Fdb version 4
-["bibtex main"] 1791470139.92177 "main.aux" "main.bbl" "main" 1791470202.82843 0
+["bibtex main"] 0 "main.aux" "main.bbl" "main" 1792075724.32646 -1
   "../extras/biblio.bib" 1791392198.46223 2530 7892a4cbe6006317192f1dbf0eaf0826 ""
   "/Users/anibal/Library/texmf/bibtex/bst/urlbst/plainurl.bst" 1791387606.39389 33495 46cfb45e24a877059f9f7e142c7fc61c ""
-  "main.aux" 1791470202.56994 5489 fe3b56519b3077914bd8e39b588f73c2 "pdflatex"
+  "main.aux" 1792075724.08972 5298 8ee90db4ab2978f4ddced40ba5ad53d0 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1791470200.5015 "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" "main.pdf" "main" 1791470202.82863 0
+["pdflatex"] 1792075722.43496 "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" "main.pdf" "main" 1792075724.3266 0
   "../appendix/app-preliminaries.tex" 1791385594.74348 476 748bd4c420c5e41543496a2dedfb0bba ""
   "../appendix/app-results.tex" 1791385594.74401 8613 93996ef2443354b8a61bb3d81f582eae ""
-  "../extras/abstract.tex" 1791385594.74939 510 64da938099939d27a18b8ad0a3f57aa0 ""
+  "../extras/abstract.tex" 1792002834.02166 63 ee434c15aa9ce74a754836f25740f3f3 ""
   "../extras/macros.tex" 1791385594.75033 1681 510d6819aa51e9a5daeb1f50041af30f ""
   "../extras/metadata.tex" 1791396007.91808 693 a80e1fd46f8e7d27cee2e370b1008292 ""
   "../figures/enumfig.tex" 1791387502.64778 12056 2a86438c60fdc163567af93b1a4562bd ""
   "../figures/gadgetpepsfig.tex" 1791387502.64863 3029 6e9c1503fba9e488f99d4221ce2796b0 ""
   "../figures/gadgetufig.tex" 1791387502.64844 1174 e99ec32b4ebb49286c68fdfc3ecdc5d7 ""
   "../sections/concl.tex" 1791387502.64731 476 748bd4c420c5e41543496a2dedfb0bba ""
-  "../sections/intro.tex" 1791387307.34115 550 4cbf688cbc6501faea77166fe2b99601 ""
+  "../sections/intro.tex" 1792002813.61237 60 d832f1737cffdd21f6dd4f892b8bda38 ""
   "../sections/preliminaries.tex" 1791418367.6254 12901 fb447c4e37da6ce2ab217c9b5a557a41 ""
-  "../sections/results.tex" 1791470200.19066 11027 f295cf3de0501dfdd2f36f4d697d6d6d ""
+  "../sections/results.tex" 1792075720.31439 8957 b0b749ab6159e8bcd956fec9033f23d9 ""
   "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" 1791397611.95431 751 2874af4b0910b0e377eed9f0e47d6604 ""
   "/Users/anibal/Library/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1791387594 89181 0c441eaf507e1f513600eaac65d23db7 ""
   "/Users/anibal/Library/texmf/fonts/enc/dvips/mnsymbol/MnSymbolA.enc" 1177804218 3341 78e600b269762aa2a25a5293cc4535c0 ""
@@ -392,9 +392,9 @@
   "/usr/local/texlive/2026basic/texmf-var/web2c/pdftex/pdflatex.fmt" 1772405612 2966183 588a2f29d0aaf280e3a142a37c2dd621 ""
   "/usr/local/texlive/2026basic/texmf.cnf" 1772405582 628 bbc09d6d38872d53c11bb48dc9b14e88 ""
   "lipics-v2021.cls" 1791385594.76297 48046 9e2ace661a3448cd4e3ccc67c1941153 ""
-  "main.aux" 1791470202.56994 5489 fe3b56519b3077914bd8e39b588f73c2 "pdflatex"
-  "main.bbl" 1791470139.93979 1442 4348f2960b0a43ae64c2110302ad94c5 "bibtex main"
-  "main.out" 1791470202.57385 2563 2e4c192de4f5d79717f48c618bdd8d29 "pdflatex"
+  "main.aux" 1792075724.08972 5298 8ee90db4ab2978f4ddced40ba5ad53d0 "pdflatex"
+  "main.bbl" 1792002836.53028 1432 0864fbf41b763801bb7fd53d6c413690 "bibtex main"
+  "main.out" 1792075724.0907 2563 2e4c192de4f5d79717f48c618bdd8d29 "pdflatex"
   "main.tex" 1791397611.95431 751 2874af4b0910b0e377eed9f0e47d6604 ""
   (generated)
   "main.aux"
