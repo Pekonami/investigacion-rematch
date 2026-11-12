@@ -1,19 +1,19 @@
 # Fdb version 4
-["bibtex main"] 1793848040.9008 "main.aux" "main.bbl" "main" 1794497246.97751 0
+["bibtex main"] 1794497469.82475 "main.aux" "main.bbl" "main" 1794497472.45093 0
   "../extras/biblio.bib" 1791392198.46223 2530 7892a4cbe6006317192f1dbf0eaf0826 ""
   "/Users/anibal/Library/texmf/bibtex/bst/urlbst/plainurl.bst" 1791387606.39389 33495 46cfb45e24a877059f9f7e142c7fc61c ""
-  "main.aux" 1794497246.77461 5038 4c77c736507c8e065e63030f8fbd16d7 "pdflatex"
+  "main.aux" 1794497472.21489 5019 da608d30e0b67d9bf334891daad98793 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1794497245.63789 "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" "main.pdf" "main" 1794497246.97765 0
+["pdflatex"] 1794497469.88641 "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" "main.pdf" "main" 1794497472.45113 0
   "../appendix/app-preliminaries.tex" 1793848056.89278 30 5ef0abc05f31d79b83e7421b2753ca6d ""
   "../appendix/app-results.tex" 1793848068.03819 22 341d573bbfc181ca06c7df5b52107642 ""
   "../extras/abstract.tex" 1793847713.91922 1219 b72380b86f4b99db1f80b3afe3623f18 ""
   "../extras/macros.tex" 1791385594.75033 1681 510d6819aa51e9a5daeb1f50041af30f ""
   "../extras/metadata.tex" 1791396007.91808 693 a80e1fd46f8e7d27cee2e370b1008292 ""
-  "../sections/concl.tex" 1791387502.64731 476 748bd4c420c5e41543496a2dedfb0bba ""
+  "../sections/concl.tex" 1794497468.00067 30 5ef0abc05f31d79b83e7421b2753ca6d ""
   "../sections/intro.tex" 1793847736.13415 3800 d55036a7ecd8b58228c83500be86f3fe ""
   "../sections/preliminaries.tex" 1793846220.76876 18800 4a62d8468f7663e2ef66e9464e67d885 ""
   "../sections/results.tex" 1794497244.96495 9125 424dfc05ba1939d5de5a862fa201de25 ""
@@ -370,9 +370,9 @@
   "/usr/local/texlive/2026basic/texmf-var/web2c/pdftex/pdflatex.fmt" 1772405612 2966183 588a2f29d0aaf280e3a142a37c2dd621 ""
   "/usr/local/texlive/2026basic/texmf.cnf" 1772405582 628 bbc09d6d38872d53c11bb48dc9b14e88 ""
   "lipics-v2021.cls" 1791385594.76297 48046 9e2ace661a3448cd4e3ccc67c1941153 ""
-  "main.aux" 1794497246.77461 5038 4c77c736507c8e065e63030f8fbd16d7 "pdflatex"
-  "main.bbl" 1793848040.96971 1432 0864fbf41b763801bb7fd53d6c413690 "bibtex main"
-  "main.out" 1794497246.77555 2306 ebeb57db18fd409e5284db35674e1b39 "pdflatex"
+  "main.aux" 1794497472.21489 5019 da608d30e0b67d9bf334891daad98793 "pdflatex"
+  "main.bbl" 1794497469.88229 1432 0864fbf41b763801bb7fd53d6c413690 "bibtex main"
+  "main.out" 1794497472.2159 2306 ebeb57db18fd409e5284db35674e1b39 "pdflatex"
   "main.tex" 1793845919.3091 772 abfc9effbff2b4e1b17ce18f9c738c99 ""
   (generated)
   "main.aux"
