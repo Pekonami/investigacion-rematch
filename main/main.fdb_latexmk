@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1793848040.9008 "main.aux" "main.bbl" "main" 1793848070.52546 0
+["bibtex main"] 1793848040.9008 "main.aux" "main.bbl" "main" 1794497246.97751 0
   "../extras/biblio.bib" 1791392198.46223 2530 7892a4cbe6006317192f1dbf0eaf0826 ""
   "/Users/anibal/Library/texmf/bibtex/bst/urlbst/plainurl.bst" 1791387606.39389 33495 46cfb45e24a877059f9f7e142c7fc61c ""
-  "main.aux" 1793848070.30998 5038 4c77c736507c8e065e63030f8fbd16d7 "pdflatex"
+  "main.aux" 1794497246.77461 5038 4c77c736507c8e065e63030f8fbd16d7 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1793848068.9642 "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" "main.pdf" "main" 1793848070.52565 0
+["pdflatex"] 1794497245.63789 "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" "main.pdf" "main" 1794497246.97765 0
   "../appendix/app-preliminaries.tex" 1793848056.89278 30 5ef0abc05f31d79b83e7421b2753ca6d ""
   "../appendix/app-results.tex" 1793848068.03819 22 341d573bbfc181ca06c7df5b52107642 ""
   "../extras/abstract.tex" 1793847713.91922 1219 b72380b86f4b99db1f80b3afe3623f18 ""
@@ -16,7 +16,7 @@
   "../sections/concl.tex" 1791387502.64731 476 748bd4c420c5e41543496a2dedfb0bba ""
   "../sections/intro.tex" 1793847736.13415 3800 d55036a7ecd8b58228c83500be86f3fe ""
   "../sections/preliminaries.tex" 1793846220.76876 18800 4a62d8468f7663e2ef66e9464e67d885 ""
-  "../sections/results.tex" 1793847765.93262 9105 c04b1aa2d4009f0c5f3b879626434c4e ""
+  "../sections/results.tex" 1794497244.96495 9125 424dfc05ba1939d5de5a862fa201de25 ""
   "/Users/anibal/Documents/iPre/investigacion-rematch/main/main.tex" 1793845919.3091 772 abfc9effbff2b4e1b17ce18f9c738c99 ""
   "/Users/anibal/Library/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1791387594 89181 0c441eaf507e1f513600eaac65d23db7 ""
   "/Users/anibal/Library/texmf/fonts/enc/dvips/mnsymbol/MnSymbolA.enc" 1177804218 3341 78e600b269762aa2a25a5293cc4535c0 ""
@@ -370,9 +370,9 @@
   "/usr/local/texlive/2026basic/texmf-var/web2c/pdftex/pdflatex.fmt" 1772405612 2966183 588a2f29d0aaf280e3a142a37c2dd621 ""
   "/usr/local/texlive/2026basic/texmf.cnf" 1772405582 628 bbc09d6d38872d53c11bb48dc9b14e88 ""
   "lipics-v2021.cls" 1791385594.76297 48046 9e2ace661a3448cd4e3ccc67c1941153 ""
-  "main.aux" 1793848070.30998 5038 4c77c736507c8e065e63030f8fbd16d7 "pdflatex"
+  "main.aux" 1794497246.77461 5038 4c77c736507c8e065e63030f8fbd16d7 "pdflatex"
   "main.bbl" 1793848040.96971 1432 0864fbf41b763801bb7fd53d6c413690 "bibtex main"
-  "main.out" 1793848070.31086 2306 ebeb57db18fd409e5284db35674e1b39 "pdflatex"
+  "main.out" 1794497246.77555 2306 ebeb57db18fd409e5284db35674e1b39 "pdflatex"
   "main.tex" 1793845919.3091 772 abfc9effbff2b4e1b17ce18f9c738c99 ""
   (generated)
   "main.aux"
