@@ -1,5 +1,23 @@
 %!TEX root = ../main/main.tex
 
 \begin{abstract}
+Regular document spanners extract spans from a document and return all
+mappings of a query under the all-match semantics. Engines such as
+REmatch evaluate such queries through variable-set automata (VAs),
+whose determinisation can be exponential. The size of the deterministic
+automaton depends on the nondeterministic automaton from which the
+construction starts. We study this dependency for two classical
+constructions, Glushkov and Thompson, adapted to automata with capture
+variables.
 
+We formalise the chain VA $\to$ eVA $\to$ logical-VA, define a Glushkov
+construction with capture variables, and prove that the resulting VA
+denotes exactly the same document spanner as the source regex formula.
+The proof separates the two-layer semantics of regex formulas from the
+word semantics of their marker translation, and relates the latter to
+the valid runs of the Glushkov VA. It therefore provides the semantic
+guarantees needed to compare the number of reachable states obtained by
+determinising the Glushkov and Thompson constructions for the same
+query, before minimisation, and to identify the conditions under which
+one construction is preferable.
 \end{abstract}

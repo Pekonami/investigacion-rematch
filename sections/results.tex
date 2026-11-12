@@ -3,77 +3,32 @@
 \subsection{Glushkov Construction with Variable Captures}
 \label{subsec:glushkov-captures}
 
-We formulate a construction that applies the position-automaton construction
-of Section~\ref{subsec:glushkov} to an expression over letters and variable
-markers, and then interprets the resulting transitions as VA transitions.
-Throughout, we use the document positions and validity conditions defined
-in Section~\ref{sec:preliminaries}.
+We formulate a construction that applies the position-automaton
+construction of Section~\ref{subsec:glushkov} to an expression over
+letters and variable markers, and then interprets the resulting
+transitions as VA transitions. Throughout, we use the document positions
+and validity conditions defined in Section~\ref{sec:preliminaries}.
 
-\paragraph{1. Input expressions and capture semantics}
-Let $\Sigma$ be the document alphabet and let $\mathcal V$ be the set of
-variables. A regular expression with variable captures has the syntax
-\[
- r ::= \varnothing\mid\varepsilon\mid a\mid r+r\mid r\cdot r
-       \mid r^*\mid x\{r\},
- \qquad a\in\Sigma,\quad x\in\mathcal V.
-\]
-Here, $+$ denotes union and $x\{r\}$ captures the substring matched by $r$
-in variable $x$. We use partial mappings and allow empty captures, following
-the mapping-based semantics of Florenzano et al.~\cite{FlorenzanoRUVV20}.
-The expression is matched against the entire document.
-
-Let $\Omega=\Sigma\cup\Gamma_{\mathcal V}$. Translate $r$ into an ordinary
-regular expression $\tau(r)$ over $\Omega$ by
-\[
-\begin{aligned}
- \tau(\varnothing)&=\varnothing,
- &\tau(\varepsilon)&=\varepsilon,
- &\tau(a)&=a,\\
- \tau(r_1+r_2)&=\tau(r_1)+\tau(r_2),
- &\tau(r_1\cdot r_2)&=\tau(r_1)\cdot\tau(r_2),
- &\tau(r^*)&=\tau(r)^*,
-\end{aligned}
-\]
-and
-\[
- \tau(x\{r\})=x\vdash\cdot\tau(r)\cdot\dashv x.
-\]
-
-Intuitively, $\tau$ acts as a term-algebra homomorphism that embeds expressions 
-with captures into standard regular expressions over $\Omega$, extending standard 
-regular expression operators.
-
-Each marker is a single symbol of $\Omega$. If the input expression already
-uses explicit markers, we take that expression directly as $E$; otherwise,
-we set $E=\tau(r)$. Only the finitely many markers occurring in $E$ are
-needed for the construction.
-
-For a word $w\in\Omega^*$, let $\pi_\Sigma(w)$ erase all variable markers.
-Call $w$ valid when each variable either has no markers in $w$, or has exactly
-one opening marker followed by exactly one closing marker.
-If $w=o_1\cdots o_m$ is valid and the markers of $x$ occur at indices
-$h<k$, its induced mapping assigns
-\[
- \mu_w(x)=
- \bigl[1+|\pi_\Sigma(o_1\cdots o_{h-1})|,
-       1+|\pi_\Sigma(o_1\cdots o_{k-1})|\bigr\rangle.
-\]
-Its domain consists of the variables whose markers occur in $w$.
-Thus, for an expression $E$ with explicit markers, the extraction semantics
-we use is
-\[
- \llbracket E\rrbracket_d
- =\{\mu_w\mid w\in\mathcal L(E),\ w\text{ is valid},\
-                    \pi_\Sigma(w)=d\}.
-\]
-Here $\mathcal L(E)$ is the ordinary language over letters and markers,
-whereas $\llbracket E\rrbracket_d$ is a set of mappings over the document.
+\paragraph{1. Input expressions}
+Let $\gamma$ be a regex formula over $\Sigma$ and $\mathcal V$, and let
+$E=\tau(\gamma)$ be its translation into an ordinary regular expression
+over $\Omega=\Sigma\cup\Gamma_{\mathcal V}$, as defined in
+Section~\ref{subsec:tau}. We use the partial-mapping semantics of
+Section~\ref{subsec:mappings} and allow empty captures. The expression
+is matched against the entire document. The construction below applies
+the position automaton of Section~\ref{subsec:glushkov} to $E$ and then
+interprets its transitions as VA transitions. If the input is already
+written with explicit markers, we take that expression directly as $E$;
+otherwise we set $E=\tau(\gamma)$. We do not impose the well-designedness
+restriction of REQL here; the construction is defined for arbitrary regex
+formulas. That restriction becomes relevant when sequentiality and the
+logical-VA model are discussed.
 
 \paragraph{2. Positions of letters and markers}
 Number every occurrence of a symbol of $\Omega$ in $E$ from left to right.
 If there are $n$ occurrences, let $\operatorname{Pos}(E)=\{1,\ldots,n\}$,
 and let $\ell_E(i)\in\Omega$ be the label at position $i$.
-Replacing every symbol occurrence by its position produces $E'$.
+Replacing every symbol occurrence by its position produces $\widehat{E}$.
 Different occurrences receive different positions even when their labels
 coincide. Neither $\varnothing$ nor $\varepsilon$ receives a position.
 For example, $x\vdash\cdot a\cdot b\cdot\dashv x$ has four positions,
@@ -82,11 +37,12 @@ labelled $x\vdash$, $a$, $b$, and $\dashv x$, respectively.
 \paragraph{3. First, last, and follow}
 Use the language-based definitions of $\operatorname{first}$,
 $\operatorname{last}$, and $\operatorname{follow}$ from
-Section~\ref{subsec:glushkov}, applied to the marked expression $E'$ over
-$\operatorname{Pos}(E)$. Thus, the construction is specified in terms of
-which position sequences occur in $\mathcal L(E')$. At this stage, each variable
-marker is treated as an ordinary symbol at its position. Its zero-width
-interpretation as a VA transition is used only in Step~5.
+Section~\ref{subsec:glushkov}, applied to the marked expression
+$\widehat{E}$ over $\operatorname{Pos}(E)$. Thus, the construction is
+specified in terms of which position sequences occur in
+$\mathcal L(\widehat{E})$. At this stage, each variable marker is treated
+as an ordinary symbol at its position. Its zero-width interpretation as a
+VA transition is used only in Step~5.
 
 \paragraph{4. Constructing the position automaton}
 Apply the Glushkov construction over $\Omega$ using the sets above.
@@ -103,19 +59,22 @@ and
 \[
  F_E=
  \begin{cases}
-   \operatorname{last}(E)\cup\{0\},&\text{if }\varepsilon \in (E'),\\
+   \operatorname{last}(E)\cup\{0\},&\text{if }\varepsilon \in \mathcal L(E),\\
    \operatorname{last}(E),&\text{otherwise}.
  \end{cases}
 \]
+Marking preserves nullability, so
+$\varepsilon\in\mathcal L(E)$ if and only if
+$\varepsilon\in\mathcal L(\widehat{E})$.
 At this stage, the position automaton reads words over $\Omega$: each
 transition reads one letter or one marker as an ordinary alphabet symbol.
 There is one state per symbol occurrence and one additional initial state.
 
 \paragraph{5. Interpreting the automaton as a VA}
-For an input expression $r$ with $E=\tau(r)$, define the associated
-\emph{Glushkov VA} to be
+For a regex formula $\gamma$ with $E=\tau(\gamma)$, define the
+associated \emph{Glushkov VA} to be
 \[
- G_r=(Q_E,0,F_E,\delta_E).
+ G_\gamma=(Q_E,0,F_E,\delta_E).
 \]
 For an input already written with explicit markers, use the same tuple
 and denote it by $G_E$.
@@ -134,8 +93,8 @@ A run is accepting when its last state belongs to $F_E$.
 Its validity and induced mapping are those of
 Definitions~\ref{def:valid-run} and~\ref{def:run-mapping}. Accordingly,
 \[
- \llbracket G_r\rrbracket_d
- =\{\mu_\rho\mid\rho\text{ is a valid accepting run of }G_r
+ \llbracket G_\gamma\rrbracket_d
+ =\{\mu_\rho\mid\rho\text{ is a valid accepting run of }G_\gamma
                        \text{ over }d\}.
 \]
 The same convention applies to $G_E$. Opening and closing a variable at
@@ -145,16 +104,27 @@ its VA can accept the empty document and capture $[1,1\rangle$.
 Variable transitions retain their marker labels; no unlabelled
 $\varepsilon$-transitions are introduced.
 
+\paragraph{6. Variables and induced mappings}
+The variables of $G_\gamma$ are exactly those of $\gamma$, that is,
+$\operatorname{var}(G_\gamma)=\operatorname{var}(\gamma)$. Every
+occurrence of a capture $x\{\gamma_0\}$ contributes one opening marker
+position and one closing marker position in $E=\tau(\gamma)$; these
+positions are states of $G_\gamma$. A valid run that traverses the
+opening position at document position $i$ and the closing position at
+document position $j$ induces the span $[i,j\rangle$ for $x$, as in
+Definition~\ref{def:run-mapping}. Thus the mappings are read directly
+from the construction; no separate annotation of captures is needed.
+
 \begin{example}[Glushkov construction with a variable capture]
 \label{ex:glushkov-capture}
 Let $\Sigma=\{a,b\}$ and consider
 \[
- r=x\{(a+b)^*\}\cdot a.
+ \gamma=x\{(a+b)^*\}\cdot a.
 \]
 The expression captures a possibly empty prefix in $x$, followed by a final
 $a$ outside the capture. Translating the capture gives
 \[
- E=\tau(r)=x\vdash\cdot(a+b)^*\cdot\dashv x\cdot a.
+ E=\tau(\gamma)=x\vdash\cdot(a+b)^*\cdot\dashv x\cdot a.
 \]
 There are five symbol occurrences, with labels
 \[
@@ -163,15 +133,15 @@ There are five symbol occurrences, with labels
  \ell_E(i) & x\vdash & a & b & \dashv x & a
 \end{array}
 \]
-The corresponding position expression is
+The corresponding marked expression is
 \[
- E'=1\cdot(2+3)^*\cdot4\cdot5.
+ \widehat{E}=1\cdot(2+3)^*\cdot4\cdot5.
 \]
 Positions $2$ and $5$ are distinct occurrences of $a$. The subexpression
-$(2+3)^*$ is nullable, but $E'$ is not: positions $1$, $4$, and $5$ must
+$(2+3)^*$ is nullable, but $\widehat{E}$ is not: positions $1$, $4$, and $5$ must
 still be read. Consequently,
 \[
- \epsilon \notin \mathcal L(E'),\qquad
+ \varepsilon \notin \mathcal L(\widehat{E}),\qquad
  \operatorname{first}(E)=\{1\},\qquad
  \operatorname{last}(E)=\{5\}.
 \]
@@ -190,7 +160,7 @@ After opening $x$, the run may read $a$ or $b$, or close $x$ immediately.
 After a symbol inside the star, it may read another symbol of the star or
 close the capture. Closing $x$ must be followed by the final $a$.
 
-The resulting VA is $G_r=(Q_E,0,F_E,\delta_E)$, with
+The resulting VA is $G_\gamma=(Q_E,0,F_E,\delta_E)$, with
 \[
  Q_E=\{0,1,2,3,4,5\},\qquad F_E=\{5\}.
 \]
@@ -225,7 +195,7 @@ closes at position $3$, yielding
 The last $a$ is consumed after the capture closes. This is the only valid
 accepting run on $aba$, so
 \[
- \llbracket G_r\rrbracket_{aba}=\{[x\mapsto[1,3\rangle]\}.
+ \llbracket G_\gamma\rrbracket_{aba}=\{[x\mapsto[1,3\rangle]\}.
 \]
 The same automaton also illustrates an empty capture. On $d=a$, the run
 \[
@@ -236,3 +206,21 @@ The same automaton also illustrates an empty capture. On $d=a$, the run
 is valid and accepting and induces $[x\mapsto[1,1\rangle]$.
 Both markers are traversed even though the captured substring is empty.
 \end{example}
+
+\begin{theorem}[Correctness of the Glushkov construction]
+\label{theo:glushkov-correct}
+For every regex formula $\gamma$ and every document $d$,
+\[
+  \llbracket G_\gamma\rrbracket_d = \llbracket\gamma\rrbracket_d.
+\]
+In particular, the underlying NFA of $G_\gamma$ recognises
+$\mathcal L(\tau(\gamma))$.
+\end{theorem}
+The proof combines the equivalence between the two-layer semantics of
+$\gamma$ and the word semantics of $\tau(\gamma)$ with the correctness
+of the Glushkov construction for ordinary expressions; it is given in
+Appendix~\ref{app:glushkov-correctness}.
+
+%comentario6
+%agregar nocion de 1 unambiguous con determinista
+%que pasa con la version de 1-unambiguous

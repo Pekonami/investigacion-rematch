@@ -1,3 +1,65 @@
 %!TEX root = ../main/main.tex
 
-Write an introduction here. 
+Regular expressions are a standard tool for locating information in
+text. In extraction-oriented applications, however, recognising that a
+pattern occurs is not enough: one needs the positions of the captured
+substrings. Under the \emph{all-match} semantics, a query can produce
+many mappings from variables to spans for the same document, including
+overlapping matches and different capture assignments that start at the
+same position. Systems such as REmatch implement this semantics and
+must enumerate all results efficiently~\cite{RiverosJV23}.
+
+Regular document spanners provide a formal model for these
+queries~\cite{FlorenzanoRUVV20}. A spanner maps each document to a set
+of mappings, and variable-set automata (VAs) recognise spanners by
+reading document letters and executing variable markers. Extended VAs
+(eVAs) group marker operations into capture steps, while logical-VAs
+add character classes and substring search, as used by REmatch. For
+deterministic sequential eVAs, enumeration can be done with
+output-linear delay after preprocessing linear in the product of the
+automaton and document sizes~\cite{FlorenzanoRUVV20}.
+
+The enumeration guarantees are stated for deterministic automata.
+Determinising a VA can produce exponentially many states, and the size
+of the result depends on the nondeterministic automaton from which the
+determinisation starts. Two classical constructions for ordinary
+regular expressions are Glushkov and Thompson~\cite{GiammarresiPW98}.
+Glushkov assigns a state to each symbol occurrence and uses the first,
+last, and follow relations; Thompson builds the automaton inductively
+and uses empty transitions. Both recognise the same language, but they
+need not have the same number of reachable subsets after
+determinisation. For extraction, the comparison must preserve capture
+information: markers do not consume input, but they change the produced
+mappings, so they cannot be eliminated as ordinary empty transitions.
+
+This paper develops the formal basis for comparing the two
+constructions in the presence of capture variables. We present the
+chain VA $\to$ eVA $\to$ logical-VA with explicit conventions for runs,
+validity, and induced mappings. We then define a Glushkov construction
+with capture variables: the source regex formula is translated into an
+ordinary expression over letters and markers, the position construction
+is applied to that expression, and marker transitions are interpreted
+as zero-width VA transitions. We prove that the resulting VA
+$G_\gamma$ denotes exactly the same document spanner as the source
+formula $\gamma$ (Theorem~\ref{theo:glushkov-correct}). The proof
+separates the two-layer semantics of regex formulas from the word
+semantics of the marker translation, and relates the latter to the
+valid runs of $G_\gamma$.
+
+The correctness result reduces the comparison with Thompson to a
+well-defined state-count question: for a query $\gamma$, compare the
+number of reachable states obtained by determinising $G_\gamma$ and the
+corresponding Thompson construction $T_\gamma$, using the same
+determinisation procedure, preserving capture semantics, and before
+minimisation. We formulate this comparison for a class $\mathcal C$ of
+expressions and discuss the choice of $\mathcal C$. Well-designed REQL
+queries are the main candidate, because they guarantee sequentiality;
+one-unambiguity is a natural special case, since a one-unambiguous
+expression has a deterministic Glushkov
+automaton~\cite{BruggemannKleinW98}.
+
+Section~\ref{sec:preliminaries} introduces the models and the
+translation $\tau$. Section~\ref{sec:results} presents the Glushkov
+construction and its correctness. Section~\ref{sec:conclusions}
+discusses the consequences for the comparison and the questions that
+remain open.
